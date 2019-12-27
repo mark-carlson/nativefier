@@ -1,9 +1,10 @@
 import * as _ from 'lodash';
-import sanitizeFilenameLib from 'sanitize-filename';
 import { DEFAULT_APP_NAME } from '../constants';
 
-export default function(platform, str) {
-  let result = sanitizeFilenameLib(str);
+import sanitizeFilenameLib = require('sanitize-filename'); // require-d because default-exports a function, which makes tsc complain and demand an `esModuleInterop` flag
+
+export default function(platform: string, filenameToSanitize: string): string {
+  let result = sanitizeFilenameLib(filenameToSanitize);
 
   // remove all non ascii or use default app name
   // eslint-disable-next-line no-control-regex
