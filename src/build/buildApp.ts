@@ -3,14 +3,15 @@ import * as crypto from 'crypto';
 import * as path from 'path';
 
 import { kebabCase } from 'lodash';
-import * as log from 'loglevel';
 import { ncp } from 'ncp';
+
+import log = require('loglevel');
 
 /**
  * Only picks certain app args to pass to nativefier.json
  * @param options
  */
-function selectAppArgs(options) {
+function selectAppArgs(options): any {
   return {
     name: options.name,
     targetUrl: options.targetUrl,
@@ -65,7 +66,7 @@ function selectAppArgs(options) {
   };
 }
 
-function maybeCopyScripts(srcs, dest) {
+async function maybeCopyScripts(srcs: string[], dest: string): Promise<void> {
   if (!srcs) {
     return new Promise((resolve) => {
       resolve();
@@ -110,7 +111,7 @@ function maybeCopyScripts(srcs, dest) {
   });
 }
 
-function normalizeAppName(appName, url) {
+function normalizeAppName(appName: string, url: string): string {
   // use a simple 3 byte random string to prevent collision
   const hash = crypto.createHash('md5');
   hash.update(url);
@@ -119,9 +120,13 @@ function normalizeAppName(appName, url) {
   return `${normalized}-nativefier-${postFixHash}`;
 }
 
-function changeAppPackageJsonName(appPath, name, url) {
+function changeAppPackageJsonName(
+  appPath: any,
+  name: string,
+  url: string,
+): void {
   const packageJsonPath = path.join(appPath, '/package.json');
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath));
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
   packageJson.name = normalizeAppName(name, url);
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson));
 }
@@ -129,13 +134,13 @@ function changeAppPackageJsonName(appPath, name, url) {
 /**
  * Creates a temporary directory and copies the './app folder' inside,
  * and adds a text file with the configuration for the single page app.
- *
- * @param {string} src
- * @param {string} dest
- * @param {{}} options
- * @param callback
  */
-function buildApp(src, dest, options, callback) {
+function buildApp(
+  src: string,
+  dest: string,
+  options: any,
+  callback?: (message?: string) => void,
+): void {
   const appArgs = selectAppArgs(options);
 
   ncp(src, dest, (error) => {

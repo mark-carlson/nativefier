@@ -2,10 +2,11 @@
 import 'source-map-support/register';
 
 import * as dns from 'dns';
-import * as log from 'loglevel';
 import * as commander from 'commander';
 import * as packageJson from '../package.json';
 import nativefier from './index';
+
+import log = require('loglevel');
 
 function collect(val: any, memo: any[]): any[] {
   memo.push(val);

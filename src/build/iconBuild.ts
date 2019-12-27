@@ -1,39 +1,33 @@
 import * as path from 'path';
 
-import * as log from 'loglevel';
-
 import helpers from '../helpers/helpers';
 import iconShellHelpers from '../helpers/iconShellHelpers';
+
+import log = require('loglevel');
 
 const { isOSX } = helpers;
 const { convertToPng, convertToIco, convertToIcns } = iconShellHelpers;
 
-function iconIsIco(iconPath) {
+function iconIsIco(iconPath: string): boolean {
   return path.extname(iconPath) === '.ico';
 }
 
-function iconIsPng(iconPath) {
+function iconIsPng(iconPath: string): boolean {
   return path.extname(iconPath) === '.png';
 }
 
-function iconIsIcns(iconPath) {
+function iconIsIcns(iconPath: string): boolean {
   return path.extname(iconPath) === '.icns';
 }
 
 /**
- * @callback augmentIconsCallback
- * @param error
- * @param options
- */
-
-/**
  * Will check and convert a `.png` to `.icns` if necessary and augment
  * options.icon with the result
- *
- * @param inpOptions will need options.platform and options.icon
- * @param {augmentIconsCallback} callback
  */
-function iconBuild(inpOptions, callback) {
+function iconBuild(
+  inpOptions: any,
+  callback: (error: any, options: any) => void,
+): void {
   const options = Object.assign({}, inpOptions);
   const returnCallback = () => {
     callback(null, options);

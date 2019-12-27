@@ -1,7 +1,6 @@
 import * as path from 'path';
 
 import * as async from 'async';
-import * as log from 'loglevel';
 import * as ncp from 'ncp';
 import * as electronPackager from 'electron-packager';
 import * as tmp from 'tmp';
@@ -14,17 +13,17 @@ import helpers from '../helpers/helpers';
 import PackagerConsole from '../helpers/packagerConsole';
 import buildApp from './buildApp';
 
+import log = require('loglevel');
+
 const { isWindows } = helpers;
 
 /**
- * Checks the app path array to determine if the packaging was completed successfully
+ * Checks the app path array to determine if packaging completed successfully
  * @param appPathArray Result from electron-packager
- * @returns {*}
  */
-function getAppPath(appPathArray) {
+function getAppPath(appPathArray: any[]): any {
   if (appPathArray.length === 0) {
     // directory already exists, --overwrite is not set
-    // exit here
     return null;
   }
 
@@ -39,31 +38,14 @@ function getAppPath(appPathArray) {
 }
 
 /**
- * Removes the `icon` parameter from options if building for Windows while not on Windows
- * and Wine is not installed
- * @param options
+ * For Windows & Linux, we have to copy over the icon to the resources/app
+ * folder, which the BrowserWindow is hard-coded to read the icon from
  */
-function maybeNoIconOption(options) {
-  const packageOptions = JSON.parse(JSON.stringify(options));
-  if (options.platform === 'win32' && !isWindows()) {
-    if (!hasbin.sync('wine')) {
-      log.warn(
-        'Wine is required to set the icon for a Windows app when packaging on non-windows platforms',
-      );
-      packageOptions.icon = null;
-    }
-  }
-  return packageOptions;
-}
-
-/**
- * For windows and linux, we have to copy over the icon to the resources/app folder, which the
- * BrowserWindow is hard coded to read the icon from
- * @param {{}} options
- * @param {string} appPath
- * @param callback
- */
-function maybeCopyIcons(options, appPath, callback) {
+function maybeCopyIcons(
+  options: any,
+  appPath: string,
+  callback: (error?: any) => void,
+): void {
   if (!options.icon) {
     callback();
     return;
@@ -74,8 +56,7 @@ function maybeCopyIcons(options, appPath, callback) {
     return;
   }
 
-  // windows & linux
-  // put the icon file into the app
+  // windows & linux: put the icon file into the app
   const destIconPath = path.join(appPath, 'resources/app');
   const destFileName = `icon${path.extname(options.icon)}`;
   ncp.ncp(options.icon, path.join(destIconPath, destFileName), (error) => {
@@ -84,84 +65,30 @@ function maybeCopyIcons(options, appPath, callback) {
 }
 
 /**
- * Removes invalid parameters from options if building for Windows while not on Windows
- * and Wine is not installed
- * @param options
+ * Removes a specific option from an options object if building for Windows
+ * while not on Windows and Wine is not installed
  */
-function removeInvalidOptions(options, param) {
+function trimWineRequiringOption(options: any, optionToRemove: string): any {
   const packageOptions = JSON.parse(JSON.stringify(options));
   if (options.platform === 'win32' && !isWindows()) {
     if (!hasbin.sync('wine')) {
       log.warn(
-        `Wine is required to use "${param}" option for a Windows app when packaging on non-windows platforms`,
+        `*NOT* packaging option "${optionToRemove}", as couldn't find Wine. Wine is required when packaging a Windows app under on non-Windows platforms`,
       );
-      packageOptions[param] = null;
+      packageOptions[optionToRemove] = null;
     }
   }
   return packageOptions;
 }
 
-/**
- * Removes the `appCopyright` parameter from options if building for Windows while not on Windows
- * and Wine is not installed
- * @param options
- */
-function maybeNoAppCopyrightOption(options) {
-  return removeInvalidOptions(options, 'appCopyright');
-}
-
-/**
- * Removes the `buildVersion` parameter from options if building for Windows while not on Windows
- * and Wine is not installed
- * @param options
- */
-function maybeNoBuildVersionOption(options) {
-  return removeInvalidOptions(options, 'buildVersion');
-}
-
-/**
- * Removes the `appVersion` parameter from options if building for Windows while not on Windows
- * and Wine is not installed
- * @param options
- */
-function maybeNoAppVersionOption(options) {
-  return removeInvalidOptions(options, 'appVersion');
-}
-
-/**
- * Removes the `versionString` parameter from options if building for Windows while not on Windows
- * and Wine is not installed
- * @param options
- */
-function maybeNoVersionStringOption(options) {
-  return removeInvalidOptions(options, 'versionString');
-}
-
-/**
- * Removes the `win32metadata` parameter from options if building for Windows while not on Windows
- * and Wine is not installed
- * @param options
- */
-function maybeNoWin32metadataOption(options) {
-  return removeInvalidOptions(options, 'win32metadata');
-}
-
-/**
- * @callback buildAppCallback
- * @param error
- * @param {string} appPath
- */
-
-/**
- *
- * @param {{}} inpOptions
- * @param {buildAppCallback} callback
- */
-function buildMain(inpOptions, callback) {
+function buildMain(
+  inpOptions: any,
+  callback: (error: any, appPath?: any) => void,
+) {
   const options = Object.assign({}, inpOptions);
 
   // pre process app
-  const tmpObj = tmp.dirSync({ mode: '0755', unsafeCleanup: true });
+  const tmpObj = tmp.dirSync({ mode: 0o755, unsafeCleanup: true });
   const tmpPath = tmpObj.name;
 
   // todo check if this is still needed on later version of packager
@@ -204,13 +131,13 @@ function buildMain(inpOptions, callback) {
       (opts, cb) => {
         progress.tick('packaging');
         // maybe skip passing icon parameter to electron packager
-        let packageOptions = maybeNoIconOption(opts);
+        let packageOptions = trimWineRequiringOption(opts, 'icon');
         // maybe skip passing other parameters to electron packager
-        packageOptions = maybeNoAppCopyrightOption(packageOptions);
-        packageOptions = maybeNoAppVersionOption(packageOptions);
-        packageOptions = maybeNoBuildVersionOption(packageOptions);
-        packageOptions = maybeNoVersionStringOption(packageOptions);
-        packageOptions = maybeNoWin32metadataOption(packageOptions);
+        packageOptions = trimWineRequiringOption(options, 'appCopyright');
+        packageOptions = trimWineRequiringOption(options, 'appVersion');
+        packageOptions = trimWineRequiringOption(options, 'buildVersion');
+        packageOptions = trimWineRequiringOption(options, 'versionString');
+        packageOptions = trimWineRequiringOption(options, 'win32metadata');
 
         packagerConsole.override();
 
