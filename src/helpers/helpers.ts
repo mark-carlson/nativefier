@@ -1,18 +1,22 @@
 import * as os from 'os';
 import * as path from 'path';
 
-import * as axios from 'axios';
+import axios from 'axios';
 import * as hasbin from 'hasbin';
 
-function isOSX() {
+type DownloadResult = {
+  data: any;
+  ext: string;
+};
+
+function isOSX(): boolean {
   return os.platform() === 'darwin';
 }
 
-function isWindows() {
+function isWindows(): boolean {
   return os.platform() === 'win32';
 }
-
-function downloadFile(fileUrl) {
+async function downloadFile(fileUrl: string): Promise<DownloadResult> {
   return axios
     .get(fileUrl, {
       responseType: 'arraybuffer',
@@ -28,7 +32,7 @@ function downloadFile(fileUrl) {
     });
 }
 
-function allowedIconFormats(platform) {
+function getAllowedIconFormats(platform: string): string[] {
   const hasIdentify = hasbin.sync('identify');
   const hasConvert = hasbin.sync('convert');
   const hasIconUtil = hasbin.sync('iconutil');
@@ -44,7 +48,7 @@ function allowedIconFormats(platform) {
 
   const formats = [];
 
-  // todo shell scripting is not supported on windows, temporary override
+  // TODO shell scripting is not supported on windows, temporary override
   if (isWindows()) {
     switch (platform) {
       case 'darwin':
@@ -57,9 +61,7 @@ function allowedIconFormats(platform) {
         formats.push('.ico');
         break;
       default:
-        throw new Error(
-          `function allowedIconFormats error: Unknown platform ${platform}`,
-        );
+        throw new Error(`Unknown platform ${platform}`);
     }
     return formats;
   }
@@ -93,9 +95,7 @@ function allowedIconFormats(platform) {
       }
       break;
     default:
-      throw new Error(
-        `function allowedIconFormats error: Unknown platform ${platform}`,
-      );
+      throw new Error(`Unknown platform ${platform}`);
   }
   return formats;
 }
@@ -104,5 +104,5 @@ export default {
   isOSX,
   isWindows,
   downloadFile,
-  allowedIconFormats,
+  allowedIconFormats: getAllowedIconFormats,
 };

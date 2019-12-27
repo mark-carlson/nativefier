@@ -10,26 +10,18 @@ tmp.setGracefulCleanup();
 
 const PNG_TO_ICNS_BIN_PATH = path.join(__dirname, '../..', 'bin/convertToIcns');
 
-/**
- * @callback pngToIcnsCallback
- * @param error
- * @param {string} icnsDest If error, will return the original png src
- */
-
-/**
- *
- * @param {string} pngSrc
- * @param {string} icnsDest
- * @param {pngToIcnsCallback} callback
- */
-function convertToIcns(pngSrc, icnsDest, callback) {
+function convertToIcns(
+  pngSource: string,
+  iconsDestination: string,
+  callback: (error: any, iconsDestination: string) => void,
+): void {
   if (!isOSX()) {
-    callback('OSX is required to convert .png to .icns icon', pngSrc);
+    callback('OSX is required to convert a .png icon to .icns', pngSource);
     return;
   }
 
   shell.exec(
-    `"${PNG_TO_ICNS_BIN_PATH}" "${pngSrc}" "${icnsDest}"`,
+    `"${PNG_TO_ICNS_BIN_PATH}" "${pngSource}" "${iconsDestination}"`,
     { silent: true },
     (exitCode, stdOut, stdError) => {
       if (stdOut.includes('icon.iconset:error') || exitCode) {
@@ -39,26 +31,27 @@ function convertToIcns(pngSrc, icnsDest, callback) {
               stdOut,
               stdError,
             },
-            pngSrc,
+            pngSource,
           );
           return;
         }
 
-        callback(stdOut, pngSrc);
+        callback(stdOut, pngSource);
         return;
       }
 
-      callback(null, icnsDest);
+      callback(null, iconsDestination);
     },
   );
 }
 
 /**
- * Converts the png to a temporary directory which will be cleaned up on process exit
- * @param {string} pngSrc
- * @param {pngToIcnsCallback} callback
+ * Converts the png to a temp directory which will be cleaned up on process exit
  */
-function convertToIcnsTmp(pngSrc, callback) {
+function convertToIcnsTmp(
+  pngSrc: string,
+  callback: (error: any, iconsDestination: string) => void,
+): void {
   const tempIconDirObj = tmp.dirSync({ unsafeCleanup: true });
   const tempIconDirPath = tempIconDirObj.name;
   convertToIcns(pngSrc, `${tempIconDirPath}/icon.icns`, callback);

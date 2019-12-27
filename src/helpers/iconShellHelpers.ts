@@ -18,11 +18,12 @@ const SCRIPT_PATHS = {
 
 /**
  * Executes a shell script with the form "./pathToScript param1 param2"
- * @param {string} shellScriptPath
- * @param {string} icoSrc input .ico
- * @param {string} dest has to be a .ico path
  */
-function iconShellHelper(shellScriptPath, icoSrc, dest) {
+async function iconShellHelper(
+  shellScriptPath: string,
+  icoSource: string,
+  icoDestination: string,
+): Promise<string> {
   return new Promise((resolve, reject) => {
     if (isWindows()) {
       reject(new Error('OSX or Linux is required'));
@@ -30,7 +31,7 @@ function iconShellHelper(shellScriptPath, icoSrc, dest) {
     }
 
     shell.exec(
-      `"${shellScriptPath}" "${icoSrc}" "${dest}"`,
+      `"${shellScriptPath}" "${icoSource}" "${icoDestination}"`,
       { silent: true },
       (exitCode, stdOut, stdError) => {
         if (exitCode) {
@@ -42,13 +43,13 @@ function iconShellHelper(shellScriptPath, icoSrc, dest) {
           return;
         }
 
-        resolve(dest);
+        resolve(icoDestination);
       },
     );
   });
 }
 
-function getTmpDirPath() {
+function getTmpDirPath(): string {
   const tempIconDirObj = tmp.dirSync({ unsafeCleanup: true });
   return tempIconDirObj.name;
 }
@@ -59,7 +60,7 @@ function getTmpDirPath() {
  * @return {Promise}
  */
 
-function singleIco(icoSrc) {
+function singleIco(icoSrc): Promise<string> {
   return iconShellHelper(
     SCRIPT_PATHS.singleIco,
     icoSrc,
@@ -67,7 +68,7 @@ function singleIco(icoSrc) {
   );
 }
 
-function convertToPng(icoSrc) {
+function convertToPng(icoSrc): Promise<string> {
   return iconShellHelper(
     SCRIPT_PATHS.convertToPng,
     icoSrc,
@@ -75,7 +76,7 @@ function convertToPng(icoSrc) {
   );
 }
 
-function convertToIco(icoSrc) {
+function convertToIco(icoSrc): Promise<string> {
   return iconShellHelper(
     SCRIPT_PATHS.convertToIco,
     icoSrc,
@@ -83,7 +84,7 @@ function convertToIco(icoSrc) {
   );
 }
 
-function convertToIcns(icoSrc) {
+function convertToIcns(icoSrc): Promise<string> {
   if (!isOSX()) {
     return new Promise((resolve, reject) =>
       reject(new Error('OSX is required to convert to a .icns icon')),
