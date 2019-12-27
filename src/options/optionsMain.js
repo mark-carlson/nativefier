@@ -1,5 +1,6 @@
-import fs from 'fs';
-import log from 'loglevel';
+import * as fs from 'fs';
+
+import * as log from 'loglevel';
 
 import inferOs from '../infer/inferOs';
 import normalizeUrl from './normalizeUrl';

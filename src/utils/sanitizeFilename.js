@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import sanitizeFilenameLib from 'sanitize-filename';
 import { DEFAULT_APP_NAME } from '../constants';
 

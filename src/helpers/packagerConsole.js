@@ -1,5 +1,5 @@
 // TODO: remove this file and use quiet mode of new version of electron packager
-const log = require('loglevel');
+import * as log from 'loglevel';
 
 class PackagerConsole {
   constructor() {

@@ -1,10 +1,12 @@
-import path from 'path';
-import packager from 'electron-packager';
-import tmp from 'tmp';
-import ncp from 'ncp';
-import async from 'async';
-import hasBinary from 'hasbin';
-import log from 'loglevel';
+import * as path from 'path';
+
+import * as async from 'async';
+import * as log from 'loglevel';
+import * as ncp from 'ncp';
+import * as electronPackager from 'electron-packager';
+import * as tmp from 'tmp';
+import * as hasbin from 'hasbin';
+
 import DishonestProgress from '../helpers/dishonestProgress';
 import optionsFactory from '../options/optionsMain';
 import iconBuild from './iconBuild';
@@ -12,7 +14,6 @@ import helpers from '../helpers/helpers';
 import PackagerConsole from '../helpers/packagerConsole';
 import buildApp from './buildApp';
 
-const copy = ncp.ncp;
 const { isWindows } = helpers;
 
 /**
@@ -45,7 +46,7 @@ function getAppPath(appPathArray) {
 function maybeNoIconOption(options) {
   const packageOptions = JSON.parse(JSON.stringify(options));
   if (options.platform === 'win32' && !isWindows()) {
-    if (!hasBinary.sync('wine')) {
+    if (!hasbin.sync('wine')) {
       log.warn(
         'Wine is required to set the icon for a Windows app when packaging on non-windows platforms',
       );
@@ -77,7 +78,7 @@ function maybeCopyIcons(options, appPath, callback) {
   // put the icon file into the app
   const destIconPath = path.join(appPath, 'resources/app');
   const destFileName = `icon${path.extname(options.icon)}`;
-  copy(options.icon, path.join(destIconPath, destFileName), (error) => {
+  ncp.ncp(options.icon, path.join(destIconPath, destFileName), (error) => {
     callback(error);
   });
 }
@@ -90,7 +91,7 @@ function maybeCopyIcons(options, appPath, callback) {
 function removeInvalidOptions(options, param) {
   const packageOptions = JSON.parse(JSON.stringify(options));
   if (options.platform === 'win32' && !isWindows()) {
-    if (!hasBinary.sync('wine')) {
+    if (!hasbin.sync('wine')) {
       log.warn(
         `Wine is required to use "${param}" option for a Windows app when packaging on non-windows platforms`,
       );
@@ -213,7 +214,7 @@ function buildMain(inpOptions, callback) {
 
         packagerConsole.override();
 
-        packager(packageOptions)
+        electronPackager(packageOptions)
           .then((appPathArray) => {
             packagerConsole.restore(); // restore console.error
             cb(null, opts, appPathArray); // options still contain the icon to waterfall

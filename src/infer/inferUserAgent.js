@@ -1,6 +1,6 @@
-import axios from 'axios';
-import _ from 'lodash';
-import log from 'loglevel';
+import * as _ from 'lodash';
+import * as axios from 'axios';
+import * as log from 'loglevel';
 
 const ELECTRON_VERSIONS_URL = 'https://atom.io/download/atom-shell/index.json';
 const DEFAULT_CHROME_VERSION = '61.0.3163.100';

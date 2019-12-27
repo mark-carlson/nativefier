@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 
 export const DEFAULT_APP_NAME = 'APP';
 export const ELECTRON_VERSION = '5.0.10';

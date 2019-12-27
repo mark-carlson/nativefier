@@ -1,4 +1,5 @@
-import axios from 'axios';
+import * as axios from 'axios';
+
 import inferTitle from './inferTitle';
 
 jest.mock('axios', () =>

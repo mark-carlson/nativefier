@@ -1,5 +1,6 @@
-import url from 'url';
-import validator from 'validator';
+import * as url from 'url';
+
+import { isURL } from 'validator';
 
 function appendProtocol(testUrl) {
   const parsed = url.parse(testUrl);
@@ -17,7 +18,7 @@ function normalizeUrl(testUrl) {
     require_tld: false,
     allow_trailing_dot: true, // mDNS addresses, https://github.com/jiahaog/nativefier/issues/308
   };
-  if (!validator.isURL(urlWithProtocol, validatorOptions)) {
+  if (!isURL(urlWithProtocol, validatorOptions)) {
     throw new Error(`Your Url: "${urlWithProtocol}" is invalid!`);
   }
   return urlWithProtocol;

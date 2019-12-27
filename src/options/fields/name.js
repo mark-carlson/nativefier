@@ -1,4 +1,5 @@
-import log from 'loglevel';
+import * as log from 'loglevel';
+
 import { sanitizeFilename } from '../../utils';
 import { inferTitle } from '../../infer';
 import { DEFAULT_APP_NAME } from '../../constants';

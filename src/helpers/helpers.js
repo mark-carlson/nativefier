@@ -1,7 +1,8 @@
-import os from 'os';
-import axios from 'axios';
-import hasBinary from 'hasbin';
-import path from 'path';
+import * as os from 'os';
+import * as path from 'path';
+
+import * as axios from 'axios';
+import * as hasbin from 'hasbin';
 
 function isOSX() {
   return os.platform() === 'darwin';
@@ -28,9 +29,9 @@ function downloadFile(fileUrl) {
 }
 
 function allowedIconFormats(platform) {
-  const hasIdentify = hasBinary.sync('identify');
-  const hasConvert = hasBinary.sync('convert');
-  const hasIconUtil = hasBinary.sync('iconutil');
+  const hasIdentify = hasbin.sync('identify');
+  const hasConvert = hasbin.sync('convert');
+  const hasIconUtil = hasbin.sync('iconutil');
 
   const pngToIcns = hasConvert && hasIconUtil;
   const pngToIco = hasConvert;

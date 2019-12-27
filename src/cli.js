@@ -1,12 +1,11 @@
-#! /usr/bin/env node
-
+#!/usr/bin/env node
 import 'source-map-support/register';
-import program from 'commander';
-import nativefier from './index';
 
-const dns = require('dns');
-const log = require('loglevel');
-const packageJson = require('./../package');
+import * as dns from 'dns';
+import * as log from 'loglevel';
+import * as commander from 'commander';
+import * as packageJson from '../package.json';
+import nativefier from './index';
 
 function collect(val, memo) {
   memo.push(val);
@@ -63,12 +62,12 @@ if (require.main === module) {
     sanitizedArgs.push(arg);
   });
 
-  program
+  commander
     .version(packageJson.version, '-v, --version')
     .arguments('<targetUrl> [dest]')
     .action((targetUrl, appDir) => {
-      program.targetUrl = targetUrl;
-      program.out = appDir;
+      commander.targetUrl = targetUrl;
+      commander.out = appDir;
     })
     .option('-n, --name <value>', 'app name')
     .option('-p, --platform <value>', "'osx', 'mas', 'linux' or 'windows'")
@@ -258,10 +257,10 @@ if (require.main === module) {
     .parse(sanitizedArgs);
 
   if (!process.argv.slice(2).length) {
-    program.help();
+    commander.help();
   }
   checkInternet();
-  nativefier(program, (error, appPath) => {
+  nativefier(commander, (error, appPath) => {
     if (error) {
       log.error(error);
       return;

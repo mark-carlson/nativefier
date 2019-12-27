@@ -1,6 +1,8 @@
-import shell from 'shelljs';
-import path from 'path';
-import tmp from 'tmp';
+import * as path from 'path';
+import * as tmp from 'tmp';
+
+import * as shell from 'shelljs';
+
 import helpers from './helpers';
 
 const { isOSX } = helpers;

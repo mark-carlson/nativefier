@@ -1,8 +1,10 @@
-import pageIcon from 'page-icon';
-import path from 'path';
-import fs from 'fs';
-import tmp from 'tmp';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as tmp from 'tmp';
+
 import gitCloud from 'gitcloud';
+import * as pageIcon from 'page-icon';
+
 import helpers from '../helpers/helpers';
 
 const { downloadFile, allowedIconFormats } = helpers;

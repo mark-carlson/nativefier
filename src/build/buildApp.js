@@ -1,11 +1,11 @@
-import fs from 'fs';
-import crypto from 'crypto';
-import _ from 'lodash';
-import path from 'path';
-import ncp from 'ncp';
+import * as fs from 'fs';
+import * as crypto from 'crypto';
+import * as path from 'path';
 
-const copy = ncp.ncp;
-const log = require('loglevel');
+import { kebabCase } from 'lodash';
+import * as log from 'loglevel';
+import { ncp } from 'ncp';
+
 /**
  * Only picks certain app args to pass to nativefier.json
  * @param options
@@ -89,7 +89,7 @@ function maybeCopyScripts(srcs, dest) {
           return;
         }
 
-        copy(src, path.join(dest, 'inject', destFileName), (error) => {
+        ncp(src, path.join(dest, 'inject', destFileName), (error) => {
           if (error) {
             reject(new Error(`Error Copying injection files: ${error}`));
             return;
@@ -115,7 +115,7 @@ function normalizeAppName(appName, url) {
   const hash = crypto.createHash('md5');
   hash.update(url);
   const postFixHash = hash.digest('hex').substring(0, 6);
-  const normalized = _.kebabCase(appName.toLowerCase());
+  const normalized = kebabCase(appName.toLowerCase());
   return `${normalized}-nativefier-${postFixHash}`;
 }
 
@@ -138,7 +138,7 @@ function changeAppPackageJsonName(appPath, name, url) {
 function buildApp(src, dest, options, callback) {
   const appArgs = selectAppArgs(options);
 
-  copy(src, dest, (error) => {
+  ncp(src, dest, (error) => {
     if (error) {
       callback(`Error Copying temporary directory: ${error}`);
       return;

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import cheerio from 'cheerio';
+import * as axios from 'axios';
+import * as cheerio from 'cheerio';
 
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36';

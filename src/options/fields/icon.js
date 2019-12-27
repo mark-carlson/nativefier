@@ -1,4 +1,5 @@
-import log from 'loglevel';
+import * as log from 'loglevel';
+
 import { inferIcon } from '../../infer';
 
 export default function({ icon, targetUrl, platform }) {

@@ -14,9 +14,8 @@ function inferredOptions(oldOptions, fieldResults) {
 
 // Takes the options object and infers new values
 // which may need async work
-export default function(options) {
+export default async function(options) {
   const tasks = fields(options);
-  return Promise.all(tasks).then((fieldResults) =>
-    inferredOptions(options, fieldResults),
-  );
+  const fieldResults = await Promise.all(tasks);
+  return inferredOptions(options, fieldResults);
 }

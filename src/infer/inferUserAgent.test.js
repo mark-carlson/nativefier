@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
+
 import inferUserAgent from './inferUserAgent';
 
 const TEST_RESULT = {

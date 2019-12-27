@@ -1,5 +1,7 @@
-import path from 'path';
-import log from 'loglevel';
+import * as path from 'path';
+
+import * as log from 'loglevel';
+
 import helpers from '../helpers/helpers';
 import iconShellHelpers from '../helpers/iconShellHelpers';
 

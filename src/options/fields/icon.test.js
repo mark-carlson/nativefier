@@ -1,4 +1,5 @@
-import log from 'loglevel';
+import * as log from 'loglevel';
+
 import icon from './icon';
 import { inferIcon } from '../../infer';
 
