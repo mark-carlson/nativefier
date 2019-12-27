@@ -7,12 +7,12 @@ import * as commander from 'commander';
 import * as packageJson from '../package.json';
 import nativefier from './index';
 
-function collect(val, memo) {
+function collect(val: any, memo: any[]): any[] {
   memo.push(val);
   return memo;
 }
 
-function parseMaybeBoolString(val) {
+function parseMaybeBoolString(val: string): boolean | string {
   switch (val) {
     case 'true':
       return true;
@@ -23,19 +23,19 @@ function parseMaybeBoolString(val) {
   }
 }
 
-function parseJson(val) {
+function parseJson(val: string): any {
   if (!val) return {};
   return JSON.parse(val);
 }
 
-function getProcessEnvs(val) {
-  if (!val) return {};
-  const pEnv = {};
-  pEnv.processEnvs = parseJson(val);
-  return pEnv;
+function getProcessEnvs(val: string): any {
+  if (!val) {
+    return {};
+  }
+  return { processEnvs: parseJson(val) };
 }
 
-function checkInternet() {
+function checkInternet(): void {
   dns.lookup('npmjs.com', (err) => {
     if (err && err.code === 'ENOTFOUND') {
       log.warn(

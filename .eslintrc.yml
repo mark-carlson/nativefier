@@ -1,10 +1,14 @@
 extends:
   - airbnb-base
   - prettier
+  - 'plugin:@typescript-eslint/eslint-recommended'
+  - 'plugin:@typescript-eslint/recommended'
 env:
   # TODO: find out how to turn this on only for src/**/*.test.js files
   jest: true
+parser: '@typescript-eslint/parser'
 plugins:
+  - '@typescript-eslint'
   - import
   - prettier
 rules:
@@ -13,3 +17,4 @@ rules:
   # Gulpfiles and tests use dev dependencies
   import/no-extraneous-dependencies: ['error', { devDependencies: ['gulpfile.babel.js', 'gulp/**/**.js', 'test/**/**.js']}]
   prettier/prettier: "error"
+  '@typescript-eslint/no-explicit-any': 'off'
