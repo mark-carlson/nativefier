@@ -291,7 +291,7 @@ function createMainWindow(inpOptions, onAppQuit, setDockBadge) {
   createNewWindow = (url) => {
     const window = new BrowserWindow(DEFAULT_WINDOW_OPTIONS);
     if (options.userAgent) {
-      window.webContents.setUserAgent(options.userAgent);
+      window.webContents.userAgent = options.userAgent;
     }
 
     if (options.proxyRules) {
@@ -329,7 +329,7 @@ function createMainWindow(inpOptions, onAppQuit, setDockBadge) {
   }
 
   if (options.userAgent) {
-    mainWindow.webContents.setUserAgent(options.userAgent);
+    mainWindow.webContents.userAgent = options.userAgent;
   }
 
   if (options.proxyRules) {
