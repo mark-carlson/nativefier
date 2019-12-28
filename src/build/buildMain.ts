@@ -133,11 +133,11 @@ function buildMain(
         // maybe skip passing icon parameter to electron packager
         let packageOptions = trimWineRequiringOption(opts, 'icon');
         // maybe skip passing other parameters to electron packager
-        packageOptions = trimWineRequiringOption(options, 'appCopyright');
-        packageOptions = trimWineRequiringOption(options, 'appVersion');
-        packageOptions = trimWineRequiringOption(options, 'buildVersion');
-        packageOptions = trimWineRequiringOption(options, 'versionString');
-        packageOptions = trimWineRequiringOption(options, 'win32metadata');
+        packageOptions = trimWineRequiringOption(opts, 'appCopyright');
+        packageOptions = trimWineRequiringOption(opts, 'appVersion');
+        packageOptions = trimWineRequiringOption(opts, 'buildVersion');
+        packageOptions = trimWineRequiringOption(opts, 'versionString');
+        packageOptions = trimWineRequiringOption(opts, 'win32metadata');
 
         packagerConsole.override();
 

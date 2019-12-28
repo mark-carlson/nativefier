@@ -4,7 +4,7 @@ import * as log from 'loglevel';
 
 import inferOs from '../infer/inferOs';
 import normalizeUrl from './normalizeUrl';
-import packageJson from '../../package.json';
+import * as packageJson from '../../package.json';
 import { ELECTRON_VERSION, PLACEHOLDER_APP_DIR } from '../constants';
 import asyncConfig from './asyncConfig';
 
@@ -12,11 +12,9 @@ const { inferPlatform, inferArch } = inferOs;
 
 /**
  * Extracts only desired keys from inpOptions and augments it with defaults
- * @param {Object} inpOptions
- * @returns {Promise}
  */
-export default function(inpOptions) {
-  const options = {
+export default function(inpOptions: any): Promise<any> {
+  const options: any = {
     dir: PLACEHOLDER_APP_DIR,
     name: inpOptions.name,
     targetUrl: normalizeUrl(inpOptions.targetUrl),
@@ -127,7 +125,7 @@ export default function(inpOptions) {
 
   if (options.globalShortcuts) {
     const globalShortcutsFileContent = fs.readFileSync(options.globalShortcuts);
-    options.globalShortcuts = JSON.parse(globalShortcutsFileContent);
+    options.globalShortcuts = JSON.parse(globalShortcutsFileContent.toString());
   }
 
   return asyncConfig(options);

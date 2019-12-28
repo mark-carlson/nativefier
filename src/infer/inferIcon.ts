@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as tmp from 'tmp';
 
-import gitCloud from 'gitcloud';
+import * as gitCloud from 'gitcloud';
 import * as pageIcon from 'page-icon';
 
 import helpers from '../helpers/helpers';
