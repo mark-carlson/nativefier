@@ -41,6 +41,10 @@
     "url": "https://github.com/jiahaog/nativefier/issues"
   },
   "homepage": "https://github.com/jiahaog/nativefier#readme",
+  "jest": {
+    "testEnvironment": "node",
+    "testRegex": "lib/.*test.[jt]s$"
+  },
   "dependencies": {
     "@types/async": "^3.0.3",
     "@types/cheerio": "^0.22.15",
