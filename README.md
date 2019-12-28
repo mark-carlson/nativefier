@@ -138,3 +138,4 @@ You can also pass nativefier flags, and mount additional volumes to provide loca
 - [ ] ESLint cleanup: upgrade, review rules, move away from yml
 - [ ] Package.json nits: move away from "^A.B.C" to more understandable "A.x
 - [ ] Upgrade electron-packager and other deps
+- [ ] Make exports more idiomatic without default & index.ts crap

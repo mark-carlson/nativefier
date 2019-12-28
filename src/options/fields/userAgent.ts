@@ -1,10 +1,15 @@
 import { inferUserAgent } from '../../infer';
 
-export default function({
+type UserAgentOpts = {
+  userAgent?: string;
+  electronVersion?: string;
+  platform?: string;
+};
+export default async function({
   userAgent,
   electronVersion,
   platform,
-}): Promise<string> {
+}: UserAgentOpts): Promise<string> {
   if (userAgent) {
     return userAgent;
   }
