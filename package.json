@@ -62,7 +62,7 @@
     "babel-polyfill": "^6.26.0",
     "cheerio": "^1.0.0-rc.2",
     "commander": "^4.0.1",
-    "electron-packager": "^12.2.0",
+    "electron-packager": "^14.1.1",
     "gitcloud": "^0.1.0",
     "hasbin": "^1.2.3",
     "lodash": "^4.17.5",
