@@ -131,6 +131,7 @@ You can also pass nativefier flags, and mount additional volumes to provide loca
 - [ ] Get rid of Gulp
 - [ ] Get rid of async
 - [ ] Make tsc strict(er)
+- [ ] Cleanup pass on cli/app code to make more modern async TS idiomatic
 - [ ] ? Get rid of chai
 - [ ] ? Get rid of micro-packages easily inlined
 - [ ] ESLint cleanup: upgrade, review rules, move away from yml
