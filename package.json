@@ -25,7 +25,7 @@
     "watch": "while true ; do gulp watch ; done",
     "package-placeholder": "npm run build && node lib/src/cli.js http://www.bennish.net/web-notifications.html ~/Desktop --overwrite --name notification-test --icon ./test-resources/iconSampleGrey.png --inject ./test-resources/test-injection.js --inject ./test-resources/test-injection.css && open ~/Desktop/notification-test-darwin-x64/notification-test.app",
     "start-placeholder": "npm run build && electron app",
-    "changelog": "./scripts/changelog",
+    "changelog": "./docs/generate-changelog",
     "format": "prettier --write '{gulp,src}/**/*.js' 'app/src/**/*.js'"
   },
   "bin": {

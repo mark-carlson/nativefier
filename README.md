@@ -5,7 +5,7 @@
 [![npm version](https://badge.fury.io/js/nativefier.svg)](https://www.npmjs.com/package/nativefier)
 [![Dependency Status](https://david-dm.org/jiahaog/nativefier.svg)](https://david-dm.org/jiahaog/nativefier)
 
-![Dock](.screenshots/dock.png)
+![Dock](dock.png)
 
 You want to make a native wrapper for WhatsApp Web (or any web page).
 
@@ -13,7 +13,7 @@ You want to make a native wrapper for WhatsApp Web (or any web page).
 nativefier web.whatsapp.com
 ```
 
-![Walkthrough](.screenshots/walkthrough.gif)
+![Walkthrough](walkthrough.gif)
 
 You're done.
 
