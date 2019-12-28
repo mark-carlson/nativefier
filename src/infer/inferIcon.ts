@@ -73,7 +73,7 @@ function inferIconFromStore(targetUrl, platform) {
   );
 }
 
-function writeFilePromise(outPath, data) {
+function writeFilePromise(outPath: string, data: any) {
   return new Promise((resolve, reject) => {
     fs.writeFile(outPath, data, (error) => {
       if (error) {
@@ -102,13 +102,11 @@ function inferFromPage(targetUrl, platform, outDir) {
   });
 }
 
-/**
- *
- * @param {string} targetUrl
- * @param {string} platform
- * @param {string} outDir
- */
-function inferIconFromUrlToPath(targetUrl, platform, outDir) {
+function inferIconFromUrlToPath(
+  targetUrl: string,
+  platform: string,
+  outDir: string,
+) {
   return inferIconFromStore(targetUrl, platform).then((icon) => {
     if (!icon) {
       return inferFromPage(targetUrl, platform, outDir);
@@ -119,11 +117,7 @@ function inferIconFromUrlToPath(targetUrl, platform, outDir) {
   });
 }
 
-/**
- * @param {string} targetUrl
- * @param {string} platform
- */
-function inferIcon(targetUrl, platform) {
+function inferIcon(targetUrl: string, platform: string) {
   const tmpObj = tmp.dirSync({ unsafeCleanup: true });
   const tmpPath = tmpObj.name;
   return inferIconFromUrlToPath(targetUrl, platform, tmpPath);
