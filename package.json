@@ -49,6 +49,7 @@
     "@types/async": "^3.0.3",
     "@types/cheerio": "^0.22.15",
     "@types/electron-packager": "^14.0.0",
+    "@types/jest": "^24.0.25",
     "@types/lodash": "^4.14.149",
     "@types/ncp": "^2.0.3",
     "@types/node": "12.x",

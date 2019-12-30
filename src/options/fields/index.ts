@@ -19,10 +19,12 @@ const fields = [
 
 // Modifies the result of each promise from a scalar
 // value to a object containing its fieldname
-function wrap(fieldName, promise, args) {
-  return promise(args).then((result) => ({
+async function wrap(fieldName: string, promise, args): Promise<any> {
+  const result = await promise(args);
+
+  return {
     [fieldName]: result,
-  }));
+  };
 }
 
 // Returns a list of promises which will all resolve
