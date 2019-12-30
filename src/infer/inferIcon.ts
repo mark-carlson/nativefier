@@ -1,18 +1,21 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import * as tmp from 'tmp';
+import { promisify } from 'util';
 
 import * as gitCloud from 'gitcloud';
 import * as pageIcon from 'page-icon';
+import * as tmp from 'tmp';
 
 import helpers from '../helpers/helpers';
 
 const { downloadFile, allowedIconFormats } = helpers;
+const writeFileAsync = promisify(fs.writeFile);
 tmp.setGracefulCleanup();
 
 const GITCLOUD_SPACE_DELIMITER = '-';
+const GITCLOUD_URL = 'https://jiahaog.github.io/nativefier-icons/';
 
-function getMaxMatchScore(iconWithScores) {
+function getMaxMatchScore(iconWithScores: any[]): number {
   return iconWithScores.reduce((maxScore, currentIcon) => {
     const currentScore = currentIcon.score;
     if (currentScore > maxScore) {
@@ -22,18 +25,15 @@ function getMaxMatchScore(iconWithScores) {
   }, 0);
 }
 
-/**
- * also maps ext to icon object
- */
-function getMatchingIcons(iconsWithScores, maxScore) {
+function getMatchingIcons(iconsWithScores: any[], maxScore: number): any[] {
   return iconsWithScores
     .filter((item) => item.score === maxScore)
-    .map((item) => Object.assign({}, item, { ext: path.extname(item.url) }));
+    .map((item) => ({ ...item, ext: path.extname(item.url) }));
 }
 
-function mapIconWithMatchScore(fileIndex, targetUrl) {
+function mapIconWithMatchScore(cloudIcons: any[], targetUrl: string): any {
   const normalisedTargetUrl = targetUrl.toLowerCase();
-  return fileIndex.map((item) => {
+  return cloudIcons.map((item) => {
     const itemWords = item.name.split(GITCLOUD_SPACE_DELIMITER);
     const score = itemWords.reduce((currentScore, word) => {
       if (normalisedTargetUrl.includes(word)) {
@@ -42,85 +42,56 @@ function mapIconWithMatchScore(fileIndex, targetUrl) {
       return currentScore;
     }, 0);
 
-    return Object.assign({}, item, { score });
+    return { ...item, score };
   });
 }
 
-function inferIconFromStore(targetUrl, platform) {
-  const allowedFormats = new Set(allowedIconFormats(platform));
-
-  return gitCloud('https://jiahaog.github.io/nativefier-icons/').then(
-    (fileIndex) => {
-      const iconWithScores = mapIconWithMatchScore(fileIndex, targetUrl);
-      const maxScore = getMaxMatchScore(iconWithScores);
-
-      if (maxScore === 0) {
-        return null;
-      }
-
-      const iconsMatchingScore = getMatchingIcons(iconWithScores, maxScore);
-      const iconsMatchingExt = iconsMatchingScore.filter((icon) =>
-        allowedFormats.has(icon.ext),
-      );
-      const matchingIcon = iconsMatchingExt[0];
-      const iconUrl = matchingIcon && matchingIcon.url;
-
-      if (!iconUrl) {
-        return null;
-      }
-      return downloadFile(iconUrl);
-    },
-  );
-}
-
-function writeFilePromise(outPath: string, data: any) {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(outPath, data, (error) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-      resolve(outPath);
-    });
-  });
-}
-
-function inferFromPage(targetUrl, platform, outDir) {
-  let preferredExt = '.png';
-  if (platform === 'win32') {
-    preferredExt = '.ico';
-  }
-
-  // todo might want to pass list of preferences instead
-  return pageIcon(targetUrl, { ext: preferredExt }).then((icon) => {
-    if (!icon) {
-      return null;
-    }
-
-    const outfilePath = path.join(outDir, `/icon${icon.ext}`);
-    return writeFilePromise(outfilePath, icon.data);
-  });
-}
-
-function inferIconFromUrlToPath(
+async function inferIconFromStore(
   targetUrl: string,
   platform: string,
-  outDir: string,
-) {
-  return inferIconFromStore(targetUrl, platform).then((icon) => {
-    if (!icon) {
-      return inferFromPage(targetUrl, platform, outDir);
-    }
+): Promise<any> {
+  const allowedFormats = new Set(allowedIconFormats(platform));
 
-    const outfilePath = path.join(outDir, `/icon${icon.ext}`);
-    return writeFilePromise(outfilePath, icon.data);
-  });
+  const cloudIcons = await gitCloud(GITCLOUD_URL);
+  const iconWithScores = mapIconWithMatchScore(cloudIcons, targetUrl);
+  const maxScore = getMaxMatchScore(iconWithScores);
+
+  if (maxScore === 0) {
+    return null;
+  }
+
+  const iconsMatchingScore = getMatchingIcons(iconWithScores, maxScore);
+  const iconsMatchingExt = iconsMatchingScore.filter((icon) =>
+    allowedFormats.has(icon.ext),
+  );
+  const matchingIcon = iconsMatchingExt[0];
+  const iconUrl = matchingIcon && matchingIcon.url;
+
+  if (!iconUrl) {
+    return null;
+  }
+  return downloadFile(iconUrl);
 }
 
-function inferIcon(targetUrl: string, platform: string) {
-  const tmpObj = tmp.dirSync({ unsafeCleanup: true });
-  const tmpPath = tmpObj.name;
-  return inferIconFromUrlToPath(targetUrl, platform, tmpPath);
-}
+export default async function inferIcon(
+  targetUrl: string,
+  platform: string,
+): Promise<string> {
+  const tmpDirPath = tmp.dirSync().name;
 
-export default inferIcon;
+  let icon: { ext: string; data: Buffer } = await inferIconFromStore(
+    targetUrl,
+    platform,
+  );
+  if (!icon) {
+    const ext = platform === 'win32' ? '.ico' : '.png';
+    icon = await pageIcon(targetUrl, { ext });
+  }
+  if (!icon) {
+    return null;
+  }
+
+  const iconPath = path.join(tmpDirPath, `/icon${icon.ext}`);
+  await writeFileAsync(iconPath, icon.data);
+  return iconPath;
+}

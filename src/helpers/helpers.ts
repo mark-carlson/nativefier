@@ -5,7 +5,7 @@ import axios from 'axios';
 import * as hasbin from 'hasbin';
 
 type DownloadResult = {
-  data: any;
+  data: Buffer;
   ext: string;
 };
 

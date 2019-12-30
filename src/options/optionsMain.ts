@@ -13,73 +13,73 @@ const { inferPlatform, inferArch } = inferOs;
 /**
  * Extracts only desired keys from inpOptions and augments it with defaults
  */
-export default function(inpOptions: any): Promise<any> {
+export default function(inputOptions: any): Promise<any> {
   const options: any = {
     dir: PLACEHOLDER_APP_DIR,
-    name: inpOptions.name,
-    targetUrl: normalizeUrl(inpOptions.targetUrl),
-    platform: inpOptions.platform || inferPlatform(),
-    arch: inpOptions.arch || inferArch(),
-    electronVersion: inpOptions.electronVersion || ELECTRON_VERSION,
+    name: inputOptions.name,
+    targetUrl: normalizeUrl(inputOptions.targetUrl),
+    platform: inputOptions.platform || inferPlatform(),
+    arch: inputOptions.arch || inferArch(),
+    electronVersion: inputOptions.electronVersion || ELECTRON_VERSION,
     nativefierVersion: packageJson.version,
-    out: inpOptions.out || process.cwd(),
-    overwrite: inpOptions.overwrite,
-    asar: inpOptions.conceal || false,
-    icon: inpOptions.icon,
-    counter: inpOptions.counter || false,
-    bounce: inpOptions.bounce || false,
-    width: inpOptions.width || 1280,
-    height: inpOptions.height || 800,
-    minWidth: inpOptions.minWidth,
-    minHeight: inpOptions.minHeight,
-    maxWidth: inpOptions.maxWidth,
-    maxHeight: inpOptions.maxHeight,
-    showMenuBar: inpOptions.showMenuBar || false,
-    fastQuit: inpOptions.fastQuit || false,
-    userAgent: inpOptions.userAgent,
-    ignoreCertificate: inpOptions.ignoreCertificate || false,
-    disableGpu: inpOptions.disableGpu || false,
-    ignoreGpuBlacklist: inpOptions.ignoreGpuBlacklist || false,
-    enableEs3Apis: inpOptions.enableEs3Apis || false,
-    insecure: inpOptions.insecure || false,
-    flashPluginDir: inpOptions.flashPath || inpOptions.flash || null,
-    diskCacheSize: inpOptions.diskCacheSize || null,
-    inject: inpOptions.inject || null,
+    out: inputOptions.out || process.cwd(),
+    overwrite: inputOptions.overwrite,
+    asar: inputOptions.conceal || false,
+    icon: inputOptions.icon,
+    counter: inputOptions.counter || false,
+    bounce: inputOptions.bounce || false,
+    width: inputOptions.width || 1280,
+    height: inputOptions.height || 800,
+    minWidth: inputOptions.minWidth,
+    minHeight: inputOptions.minHeight,
+    maxWidth: inputOptions.maxWidth,
+    maxHeight: inputOptions.maxHeight,
+    showMenuBar: inputOptions.showMenuBar || false,
+    fastQuit: inputOptions.fastQuit || false,
+    userAgent: inputOptions.userAgent,
+    ignoreCertificate: inputOptions.ignoreCertificate || false,
+    disableGpu: inputOptions.disableGpu || false,
+    ignoreGpuBlacklist: inputOptions.ignoreGpuBlacklist || false,
+    enableEs3Apis: inputOptions.enableEs3Apis || false,
+    insecure: inputOptions.insecure || false,
+    flashPluginDir: inputOptions.flashPath || inputOptions.flash || null,
+    diskCacheSize: inputOptions.diskCacheSize || null,
+    inject: inputOptions.inject || null,
     ignore: 'src',
-    fullScreen: inpOptions.fullScreen || false,
-    maximize: inpOptions.maximize || false,
-    hideWindowFrame: inpOptions.hideWindowFrame,
-    verbose: inpOptions.verbose,
-    disableContextMenu: inpOptions.disableContextMenu,
-    disableDevTools: inpOptions.disableDevTools,
-    crashReporter: inpOptions.crashReporter,
+    fullScreen: inputOptions.fullScreen || false,
+    maximize: inputOptions.maximize || false,
+    hideWindowFrame: inputOptions.hideWindowFrame,
+    verbose: inputOptions.verbose,
+    disableContextMenu: inputOptions.disableContextMenu,
+    disableDevTools: inputOptions.disableDevTools,
+    crashReporter: inputOptions.crashReporter,
     // workaround for electron-packager#375
     tmpdir: false,
-    zoom: inpOptions.zoom || 1.0,
-    internalUrls: inpOptions.internalUrls || null,
-    proxyRules: inpOptions.proxyRules || null,
-    singleInstance: inpOptions.singleInstance || false,
-    clearCache: inpOptions.clearCache || false,
-    appVersion: inpOptions.appVersion,
-    buildVersion: inpOptions.buildVersion,
-    appCopyright: inpOptions.appCopyright,
-    versionString: inpOptions.versionString,
-    win32metadata: inpOptions.win32metadata || {
-      ProductName: inpOptions.name,
-      InternalName: inpOptions.name,
-      FileDescription: inpOptions.name,
+    zoom: inputOptions.zoom || 1.0,
+    internalUrls: inputOptions.internalUrls || null,
+    proxyRules: inputOptions.proxyRules || null,
+    singleInstance: inputOptions.singleInstance || false,
+    clearCache: inputOptions.clearCache || false,
+    appVersion: inputOptions.appVersion,
+    buildVersion: inputOptions.buildVersion,
+    appCopyright: inputOptions.appCopyright,
+    versionString: inputOptions.versionString,
+    win32metadata: inputOptions.win32metadata || {
+      ProductName: inputOptions.name,
+      InternalName: inputOptions.name,
+      FileDescription: inputOptions.name,
     },
-    processEnvs: inpOptions.processEnvs,
-    fileDownloadOptions: inpOptions.fileDownloadOptions,
-    tray: inpOptions.tray || false,
-    basicAuthUsername: inpOptions.basicAuthUsername || null,
-    basicAuthPassword: inpOptions.basicAuthPassword || null,
-    alwaysOnTop: inpOptions.alwaysOnTop || false,
-    titleBarStyle: inpOptions.titleBarStyle || null,
-    globalShortcuts: inpOptions.globalShortcuts || null,
-    browserwindowOptions: inpOptions.browserwindowOptions,
-    backgroundColor: inpOptions.backgroundColor || null,
-    darwinDarkModeSupport: inpOptions.darwinDarkModeSupport || false,
+    processEnvs: inputOptions.processEnvs,
+    fileDownloadOptions: inputOptions.fileDownloadOptions,
+    tray: inputOptions.tray || false,
+    basicAuthUsername: inputOptions.basicAuthUsername || null,
+    basicAuthPassword: inputOptions.basicAuthPassword || null,
+    alwaysOnTop: inputOptions.alwaysOnTop || false,
+    titleBarStyle: inputOptions.titleBarStyle || null,
+    globalShortcuts: inputOptions.globalShortcuts || null,
+    browserwindowOptions: inputOptions.browserwindowOptions,
+    backgroundColor: inputOptions.backgroundColor || null,
+    darwinDarkModeSupport: inputOptions.darwinDarkModeSupport || false,
   };
 
   if (options.verbose) {
@@ -92,7 +92,7 @@ export default function(inpOptions: any): Promise<any> {
     options.insecure = true;
   }
 
-  if (inpOptions.honest) {
+  if (inputOptions.honest) {
     options.userAgent = null;
   }
 
@@ -115,12 +115,12 @@ export default function(inpOptions: any): Promise<any> {
     options.height = options.maxHeight;
   }
 
-  if (typeof inpOptions.x !== 'undefined') {
-    options.x = inpOptions.x;
+  if (typeof inputOptions.x !== 'undefined') {
+    options.x = inputOptions.x;
   }
 
-  if (typeof inpOptions.y !== 'undefined') {
-    options.y = inpOptions.y;
+  if (typeof inputOptions.y !== 'undefined') {
+    options.y = inputOptions.y;
   }
 
   if (options.globalShortcuts) {

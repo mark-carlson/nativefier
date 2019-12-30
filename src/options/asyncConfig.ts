@@ -2,14 +2,14 @@ import fields from './fields';
 
 function resultArrayToObject(fieldResults) {
   return fieldResults.reduce(
-    (accumulator, value) => Object.assign({}, accumulator, value),
+    (accumulator, value) => ({ ...accumulator, ...value }),
     {},
   );
 }
 
 function inferredOptions(oldOptions, fieldResults) {
   const newOptions = resultArrayToObject(fieldResults);
-  return Object.assign({}, oldOptions, newOptions);
+  return { ...oldOptions, ...newOptions };
 }
 
 // Takes the options object and infers new values
