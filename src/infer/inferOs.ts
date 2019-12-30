@@ -1,6 +1,6 @@
 import * as os from 'os';
 
-function inferPlatform(): string {
+export function inferPlatform(): string {
   const platform = os.platform();
   if (
     platform === 'darwin' ||
@@ -15,15 +15,10 @@ function inferPlatform(): string {
   throw new Error(`Untested platform ${platform} detected`);
 }
 
-function inferArch(): string {
+export function inferArch(): string {
   const arch = os.arch();
   if (arch !== 'ia32' && arch !== 'x64' && arch !== 'arm') {
     throw new Error(`Incompatible architecture ${arch} detected`);
   }
   return arch;
 }
-
-export default {
-  inferPlatform,
-  inferArch,
-};

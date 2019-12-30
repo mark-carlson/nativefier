@@ -6,16 +6,14 @@ import * as electronPackager from 'electron-packager';
 import * as tmp from 'tmp';
 import * as hasbin from 'hasbin';
 
-import DishonestProgress from '../helpers/dishonestProgress';
-import optionsFactory from '../options/optionsMain';
-import iconBuild from './iconBuild';
-import helpers from '../helpers/helpers';
-import PackagerConsole from '../helpers/packagerConsole';
-import buildApp from './buildApp';
+import { DishonestProgress } from '../helpers/dishonestProgress';
+import { getOptions } from '../options/optionsMain';
+import { iconBuild } from './iconBuild';
+import { isWindows } from '../helpers/helpers';
+import { PackagerConsole } from '../helpers/packagerConsole';
+import { buildApp } from './buildApp';
 
 import log = require('loglevel');
-
-const { isWindows } = helpers;
 
 /**
  * Checks the app path array to determine if packaging completed successfully
@@ -81,11 +79,11 @@ function trimWineRequiringOption(options: any, optionToRemove: string): any {
   return packageOptions;
 }
 
-function buildMain(
+export function buildMain(
   inpOptions: any,
   callback: (error: any, appPath?: any) => void,
 ) {
-  const options = Object.assign({}, inpOptions);
+  const options = { ...inpOptions };
 
   // pre process app
   const tmpObj = tmp.dirSync({ mode: 0o755, unsafeCleanup: true });
@@ -100,7 +98,7 @@ function buildMain(
     [
       (cb) => {
         progress.tick('inferring');
-        optionsFactory(options)
+        getOptions(options)
           .then((result) => {
             cb(null, result);
           })
@@ -116,9 +114,7 @@ function buildMain(
             return;
           }
           // Change the reference file for the Electron app to be the temporary path
-          const newOptions = Object.assign({}, opts, {
-            dir: tmpPath,
-          });
+          const newOptions = { ...opts, dir: tmpPath };
           cb(null, newOptions);
         });
       },
@@ -171,5 +167,3 @@ function buildMain(
     },
   );
 }
-
-export default buildMain;

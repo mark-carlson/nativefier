@@ -9,14 +9,14 @@ type DownloadResult = {
   ext: string;
 };
 
-function isOSX(): boolean {
+export function isOSX(): boolean {
   return os.platform() === 'darwin';
 }
 
-function isWindows(): boolean {
+export function isWindows(): boolean {
   return os.platform() === 'win32';
 }
-async function downloadFile(fileUrl: string): Promise<DownloadResult> {
+export async function downloadFile(fileUrl: string): Promise<DownloadResult> {
   return axios
     .get(fileUrl, {
       responseType: 'arraybuffer',
@@ -32,7 +32,7 @@ async function downloadFile(fileUrl: string): Promise<DownloadResult> {
     });
 }
 
-function getAllowedIconFormats(platform: string): string[] {
+export function getAllowedIconFormats(platform: string): string[] {
   const hasIdentify = hasbin.sync('identify');
   const hasConvert = hasbin.sync('convert');
   const hasIconUtil = hasbin.sync('iconutil');
@@ -99,10 +99,3 @@ function getAllowedIconFormats(platform: string): string[] {
   }
   return formats;
 }
-
-export default {
-  isOSX,
-  isWindows,
-  downloadFile,
-  allowedIconFormats: getAllowedIconFormats,
-};

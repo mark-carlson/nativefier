@@ -3,9 +3,7 @@ import * as tmp from 'tmp';
 
 import * as shell from 'shelljs';
 
-import helpers from './helpers';
-
-const { isWindows, isOSX } = helpers;
+import { isWindows, isOSX } from './helpers';
 
 tmp.setGracefulCleanup();
 
@@ -60,7 +58,7 @@ function getTmpDirPath(): string {
  * @return {Promise}
  */
 
-function singleIco(icoSrc): Promise<string> {
+export function singleIco(icoSrc: string): Promise<string> {
   return iconShellHelper(
     SCRIPT_PATHS.singleIco,
     icoSrc,
@@ -68,7 +66,7 @@ function singleIco(icoSrc): Promise<string> {
   );
 }
 
-function convertToPng(icoSrc): Promise<string> {
+export function convertToPng(icoSrc: string): Promise<string> {
   return iconShellHelper(
     SCRIPT_PATHS.convertToPng,
     icoSrc,
@@ -76,7 +74,7 @@ function convertToPng(icoSrc): Promise<string> {
   );
 }
 
-function convertToIco(icoSrc): Promise<string> {
+export function convertToIco(icoSrc: string): Promise<string> {
   return iconShellHelper(
     SCRIPT_PATHS.convertToIco,
     icoSrc,
@@ -84,7 +82,7 @@ function convertToIco(icoSrc): Promise<string> {
   );
 }
 
-function convertToIcns(icoSrc): Promise<string> {
+export function convertToIcns(icoSrc: string): Promise<string> {
   if (!isOSX()) {
     return new Promise((resolve, reject) =>
       reject(new Error('OSX is required to convert to a .icns icon')),
@@ -96,10 +94,3 @@ function convertToIcns(icoSrc): Promise<string> {
     `${getTmpDirPath()}/icon.icns`,
   );
 }
-
-export default {
-  singleIco,
-  convertToPng,
-  convertToIco,
-  convertToIcns,
-};

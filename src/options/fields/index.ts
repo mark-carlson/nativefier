@@ -1,6 +1,6 @@
-import icon from './icon';
-import userAgent from './userAgent';
-import name from './name';
+import { icon } from './icon';
+import { userAgent } from './userAgent';
+import { name } from './name';
 
 const fields = [
   {
@@ -27,6 +27,6 @@ function wrap(fieldName, promise, args) {
 
 // Returns a list of promises which will all resolve
 // with the following result: {[fieldName]: fieldvalue}
-export default function(options) {
+export function getFields(options) {
   return fields.map(({ field, task }) => wrap(field, task, options));
 }

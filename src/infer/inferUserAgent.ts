@@ -51,7 +51,7 @@ export function getUserAgentString(
   return userAgent;
 }
 
-async function inferUserAgent(
+export async function inferUserAgent(
   electronVersion: string,
   platform: string,
   url = ELECTRON_VERSIONS_URL,
@@ -69,5 +69,3 @@ async function inferUserAgent(
     return getUserAgentString(DEFAULT_CHROME_VERSION, platform);
   }
 }
-
-export default inferUserAgent;

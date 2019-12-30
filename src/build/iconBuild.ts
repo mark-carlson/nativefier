@@ -1,12 +1,13 @@
 import * as path from 'path';
 
-import helpers from '../helpers/helpers';
-import iconShellHelpers from '../helpers/iconShellHelpers';
+import { isOSX } from '../helpers/helpers';
+import {
+  convertToPng,
+  convertToIco,
+  convertToIcns,
+} from '../helpers/iconShellHelpers';
 
 import log = require('loglevel');
-
-const { isOSX } = helpers;
-const { convertToPng, convertToIco, convertToIcns } = iconShellHelpers;
 
 function iconIsIco(iconPath: string): boolean {
   return path.extname(iconPath) === '.ico';
@@ -24,11 +25,11 @@ function iconIsIcns(iconPath: string): boolean {
  * Will check and convert a `.png` to `.icns` if necessary and augment
  * options.icon with the result
  */
-function iconBuild(
+export function iconBuild(
   inpOptions: any,
   callback: (error: any, options: any) => void,
 ): void {
-  const options = Object.assign({}, inpOptions);
+  const options = { ...inpOptions };
   const returnCallback = () => {
     callback(null, options);
   };
@@ -98,5 +99,3 @@ function iconBuild(
       returnCallback();
     });
 }
-
-export default iconBuild;

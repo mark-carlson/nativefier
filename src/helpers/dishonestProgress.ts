@@ -1,6 +1,6 @@
 import ProgressBar = require('progress'); // require-d because default-exports a function, which makes tsc complain and demand an `esModuleInterop` flag
 
-class DishonestProgress {
+export class DishonestProgress {
   private tickParts: number;
 
   private bar: ProgressBar;
@@ -76,5 +76,3 @@ class DishonestProgress {
     }, 200);
   }
 }
-
-export default DishonestProgress;

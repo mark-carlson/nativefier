@@ -1,4 +1,4 @@
-import fields from './fields';
+import { getFields } from './fields';
 
 function resultArrayToObject(fieldResults) {
   return fieldResults.reduce(
@@ -14,8 +14,8 @@ function inferredOptions(oldOptions, fieldResults) {
 
 // Takes the options object and infers new values
 // which may need async work
-export default async function(options) {
-  const tasks = fields(options);
+export async function asyncConfig(options) {
+  const tasks = getFields(options);
   const fieldResults = await Promise.all(tasks);
   return inferredOptions(options, fieldResults);
 }

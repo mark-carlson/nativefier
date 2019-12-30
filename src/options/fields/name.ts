@@ -4,12 +4,7 @@ import { DEFAULT_APP_NAME } from '../../constants';
 
 import log = require('loglevel');
 
-async function tryToInferName({ name, targetUrl }): Promise<string> {
-  // .length also checks if its the commanderJS function or a string
-  if (name && name.length > 0) {
-    return Promise.resolve(name);
-  }
-
+async function tryToInferName(targetUrl: string): Promise<string> {
   try {
     const pageTitle = await inferTitle(targetUrl);
     return pageTitle || DEFAULT_APP_NAME;
@@ -21,7 +16,16 @@ async function tryToInferName({ name, targetUrl }): Promise<string> {
   }
 }
 
-export default async function({ platform, name, targetUrl }): Promise<string> {
-  const inferredName = await tryToInferName({ name, targetUrl });
+export async function name({
+  nameToUse,
+  platform,
+  targetUrl,
+}): Promise<string> {
+  // .length also checks if its the commanderJS function or a string
+  if (nameToUse && nameToUse.length > 0) {
+    return sanitizeFilename(platform, nameToUse);
+  }
+
+  const inferredName = await tryToInferName(targetUrl);
   return sanitizeFilename(platform, inferredName);
 }

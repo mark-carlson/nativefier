@@ -10,7 +10,7 @@ function appendProtocol(testUrl: string): string {
   return testUrl;
 }
 
-function normalizeUrl(testUrl: string): string {
+export function normalizeUrl(testUrl: string): string {
   const urlWithProtocol = appendProtocol(testUrl);
 
   /* eslint-disable @typescript-eslint/camelcase */
@@ -25,5 +25,3 @@ function normalizeUrl(testUrl: string): string {
   }
   return urlWithProtocol;
 }
-
-export default normalizeUrl;

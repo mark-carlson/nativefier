@@ -135,7 +135,7 @@ function changeAppPackageJsonName(
  * Creates a temporary directory and copies the './app folder' inside,
  * and adds a text file with the configuration for the single page app.
  */
-export default function buildApp(
+export function buildApp(
   src: string,
   dest: string,
   options: any,

@@ -1,4 +1,4 @@
-import sanitizeFilename from './sanitizeFilename';
+import { sanitizeFilename } from './sanitizeFilename';
 import { DEFAULT_APP_NAME } from '../constants';
 
 describe('replacing non ascii characters', () => {

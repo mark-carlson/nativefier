@@ -1,4 +1,4 @@
-export { default as inferIcon } from './inferIcon';
-export { default as inferOs } from './inferOs';
-export { default as inferTitle } from './inferTitle';
-export { default as inferUserAgent } from './inferUserAgent';
+export { inferIcon } from './inferIcon';
+export { inferArch, inferPlatform } from './inferOs';
+export { inferTitle } from './inferTitle';
+export { inferUserAgent } from './inferUserAgent';

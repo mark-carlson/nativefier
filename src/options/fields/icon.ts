@@ -2,7 +2,7 @@ import { inferIcon } from '../../infer';
 
 import log = require('loglevel');
 
-export default function({ icon, targetUrl, platform }) {
+export function icon({ icon, targetUrl, platform }) {
   // Icon is the path to the icon
   if (icon) {
     return Promise.resolve(icon);

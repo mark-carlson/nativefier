@@ -1,7 +1,7 @@
 // TODO: remove this file and use quiet mode of new version of electron packager
 import log = require('loglevel');
 
-class PackagerConsole {
+export class PackagerConsole {
   private logs: any[];
 
   private consoleError: any;
@@ -31,5 +31,3 @@ class PackagerConsole {
     log.info(this.logs.join(' '));
   }
 }
-
-export default PackagerConsole;

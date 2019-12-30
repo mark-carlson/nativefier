@@ -3,23 +3,26 @@ import * as tmp from 'tmp';
 
 import * as shell from 'shelljs';
 
-import helpers from './helpers';
+import { isOSX } from './helpers';
 
-const { isOSX } = helpers;
 tmp.setGracefulCleanup();
 
 const PNG_TO_ICNS_BIN_PATH = path.join(__dirname, '../..', 'bin/convertToIcns');
 
-function convertToIcns(
+/**
+ * Converts the png to a temp directory which will be cleaned up on process exit
+ */
+export function convertToIcns(
   pngSource: string,
-  iconsDestination: string,
   callback: (error: any, iconsDestination: string) => void,
 ): void {
+  const tmpIconDirPath = tmp.dirSync({ unsafeCleanup: true }).name;
   if (!isOSX()) {
     callback('OSX is required to convert a .png icon to .icns', pngSource);
     return;
   }
 
+  const iconsDestination = `${tmpIconDirPath}/icon.icns`;
   shell.exec(
     `"${PNG_TO_ICNS_BIN_PATH}" "${pngSource}" "${iconsDestination}"`,
     { silent: true },
@@ -44,17 +47,3 @@ function convertToIcns(
     },
   );
 }
-
-/**
- * Converts the png to a temp directory which will be cleaned up on process exit
- */
-function convertToIcnsTmp(
-  pngSrc: string,
-  callback: (error: any, iconsDestination: string) => void,
-): void {
-  const tempIconDirObj = tmp.dirSync({ unsafeCleanup: true });
-  const tempIconDirPath = tempIconDirObj.name;
-  convertToIcns(pngSrc, `${tempIconDirPath}/icon.icns`, callback);
-}
-
-export default convertToIcnsTmp;

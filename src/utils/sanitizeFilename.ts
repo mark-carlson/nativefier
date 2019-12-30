@@ -5,7 +5,10 @@ import { DEFAULT_APP_NAME } from '../constants';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const sanitize = require('sanitize-filename');
 
-export default function(platform: string, filenameToSanitize: string): string {
+export function sanitizeFilename(
+  platform: string,
+  filenameToSanitize: string,
+): string {
   let result = sanitize(filenameToSanitize);
 
   // remove all non ascii or use default app name

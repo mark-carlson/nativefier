@@ -2,18 +2,16 @@ import * as fs from 'fs';
 
 import * as log from 'loglevel';
 
-import inferOs from '../infer/inferOs';
-import normalizeUrl from './normalizeUrl';
+import { inferPlatform, inferArch } from '../infer';
+import { normalizeUrl } from './normalizeUrl';
 import * as packageJson from '../../package.json';
 import { ELECTRON_VERSION, PLACEHOLDER_APP_DIR } from '../constants';
-import asyncConfig from './asyncConfig';
-
-const { inferPlatform, inferArch } = inferOs;
+import { asyncConfig } from './asyncConfig';
 
 /**
  * Extracts only desired keys from inpOptions and augments it with defaults
  */
-export default function(inputOptions: any): Promise<any> {
+export function getOptions(inputOptions: any): Promise<any> {
   const options: any = {
     dir: PLACEHOLDER_APP_DIR,
     name: inputOptions.name,

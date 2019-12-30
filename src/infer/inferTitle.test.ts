@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import inferTitle from './inferTitle';
+import { inferTitle } from './inferTitle';
 
 test('it returns the correct title', async () => {
   const axiosGetMock = jest.spyOn(axios, 'get');

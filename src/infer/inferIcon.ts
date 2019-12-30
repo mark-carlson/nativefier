@@ -6,9 +6,8 @@ import * as gitCloud from 'gitcloud';
 import * as pageIcon from 'page-icon';
 import * as tmp from 'tmp';
 
-import helpers from '../helpers/helpers';
+import { downloadFile, getAllowedIconFormats } from '../helpers/helpers';
 
-const { downloadFile, allowedIconFormats } = helpers;
 const writeFileAsync = promisify(fs.writeFile);
 tmp.setGracefulCleanup();
 
@@ -50,7 +49,7 @@ async function inferIconFromStore(
   targetUrl: string,
   platform: string,
 ): Promise<any> {
-  const allowedFormats = new Set(allowedIconFormats(platform));
+  const allowedFormats = new Set(getAllowedIconFormats(platform));
 
   const cloudIcons = await gitCloud(GITCLOUD_URL);
   const iconWithScores = mapIconWithMatchScore(cloudIcons, targetUrl);
@@ -73,7 +72,7 @@ async function inferIconFromStore(
   return downloadFile(iconUrl);
 }
 
-export default async function inferIcon(
+export async function inferIcon(
   targetUrl: string,
   platform: string,
 ): Promise<string> {

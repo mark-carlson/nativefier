@@ -1,6 +1,5 @@
 import 'source-map-support/register';
-import 'babel-polyfill';
 
-import buildApp from './build/buildMain';
+import { buildMain } from './build/buildMain';
 
-export default buildApp;
+export default buildMain;
