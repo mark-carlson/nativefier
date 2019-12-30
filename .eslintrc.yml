@@ -8,14 +8,9 @@ env:
 parser: '@typescript-eslint/parser'
 plugins:
   - '@typescript-eslint'
-  - import
   - prettier
 rules:
   # TODO: Remove this when we have shifted away from the async package
   no-shadow: 'warn'
-  # Gulpfiles and tests use dev dependencies
-  import/no-extraneous-dependencies: ['error', { devDependencies: ['gulpfile.babel.js', 'gulp/**/**.js', 'test/**/**.js']}]
   prettier/prettier: "error"
   '@typescript-eslint/no-explicit-any': 'off'
-  import/extensions: 'off'
-  import/no-unresolved: 'off'
