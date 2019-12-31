@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as fs from 'fs';
+import { writeFile } from 'fs';
 import { promisify } from 'util';
 
 import * as gitCloud from 'gitcloud';
@@ -8,7 +8,7 @@ import * as tmp from 'tmp';
 
 import { downloadFile, getAllowedIconFormats } from '../helpers/helpers';
 
-const writeFileAsync = promisify(fs.writeFile);
+const writeFileAsync = promisify(writeFile);
 tmp.setGracefulCleanup();
 
 const GITCLOUD_SPACE_DELIMITER = '-';
