@@ -2,33 +2,29 @@ import { icon } from './icon';
 import { userAgent } from './userAgent';
 import { name } from './name';
 
-const fields = [
+const OPTIONS_NEEDING_POSTPROCESSING = [
   {
-    field: 'userAgent',
-    task: userAgent,
+    optionName: 'userAgent',
+    processor: userAgent,
   },
   {
-    field: 'icon',
-    task: icon,
+    optionName: 'icon',
+    processor: icon,
   },
   {
-    field: 'name',
-    task: name,
+    optionName: 'name',
+    processor: name,
   },
 ];
 
-// Modifies the result of each promise from a scalar
-// value to a object containing its fieldname
-async function wrap(fieldName: string, promise, args): Promise<any> {
-  const result = await promise(args);
+export function getProcessedOptions(options): Promise<any>[] {
+  return OPTIONS_NEEDING_POSTPROCESSING.map(
+    async ({ optionName, processor }) => {
+      const result = await processor(options);
 
-  return {
-    [fieldName]: result,
-  };
-}
-
-// Returns a list of promises which will all resolve
-// with the following result: {[fieldName]: fieldvalue}
-export function getFields(options) {
-  return fields.map(({ field, task }) => wrap(field, task, options));
+      return {
+        [optionName]: result,
+      };
+    },
+  );
 }

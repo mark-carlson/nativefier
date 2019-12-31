@@ -1,4 +1,4 @@
-import { getFields } from './index';
+import { getProcessedOptions } from './index';
 import { icon } from './icon';
 import { userAgent } from './userAgent';
 import { name } from './name';
@@ -13,7 +13,7 @@ modules.forEach((module) => {
 });
 
 test('it should return a list of promises', () => {
-  const result = getFields({});
+  const result = getProcessedOptions({});
   expect(result).toHaveLength(3);
   result.forEach((value) => {
     expect(value).toBeInstanceOf(Promise);
