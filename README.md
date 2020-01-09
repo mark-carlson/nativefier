@@ -118,6 +118,12 @@ You can also pass nativefier flags, and mount additional volumes to provide loca
 
     docker run -v $PATH_TO_ICON/:/src -v $TARGET-PATH:/target local/nativefier --icon /src/icon.png --name whatsApp -p linux -a x64 https://my-web-app.com/ /target/
 
+## Custom Run Script
+
+```
+node lib/cli.js --name "Decanting" --height "1080px" --min-height "800px" --width "1920px" --min-width "1400px"  --icon "/Users/markcarlson/Downloads/rocketberry_1024.icns" --app-version "1.0" --app-copyright "Copyright 2020 Takeoff Technologies, Inc." --build-version "1.0"  --full-screen --hide-window-frame --disable-context-menu --disable-dev-tools --clear-cache --always-on-top --background-color "#f8f8f8" "https://decanting-ui-sunbird-s3.tom.takeoff.com/" "/Users/markcarlson/Desktop"
+```
+
 ## License
 
 [MIT](LICENSE.md)

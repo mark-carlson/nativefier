@@ -205,15 +205,15 @@ function createMenu({
       role: 'help',
       submenu: [
         {
-          label: `Built with Nativefier v${nativefierVersion}`,
+          label: `Built by Takeoff Technologies, Inc v${nativefierVersion}`,
           click: () => {
-            shell.openExternal('https://github.com/jiahaog/nativefier');
+            shell.openExternal('https://takeoff.com');
           },
         },
         {
           label: 'Report an Issue',
           click: () => {
-            shell.openExternal('https://github.com/jiahaog/nativefier/issues');
+            shell.openExternal('https://github.com/TakeoffTech');
           },
         },
       ],
