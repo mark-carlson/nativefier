@@ -213,7 +213,7 @@ function createMenu({
         {
           label: 'Report an Issue',
           click: () => {
-            shell.openExternal('https://github.com/TakeoffTech');
+            shell.openExternal('https://takeoff.com');
           },
         },
       ],
